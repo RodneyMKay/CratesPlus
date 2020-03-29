@@ -301,7 +301,12 @@ public class CratesPlus extends JavaPlugin implements Listener {
                 }
                 Location locationObj;
                 try {
-                    locationObj = new Location(Bukkit.getWorld(strings.get(0)), Double.parseDouble(strings.get(1)), Double.parseDouble(strings.get(2)), Double.parseDouble(strings.get(3)));
+                    World world = Bukkit.getWorld(strings.get(0));
+                    if (world == null) {
+                        getLogger().warning("Crate " + name + " is located in world " + strings.get(0) + " which is currently not loaded and will therefor not work!");
+                        continue;
+                    }
+                    locationObj = new Location(world, Double.parseDouble(strings.get(1)), Double.parseDouble(strings.get(2)), Double.parseDouble(strings.get(3)));
                     Block block = locationObj.getBlock();
                     if (block == null || block.getType().equals(Material.AIR)) {
                         getLogger().warning("No block found at " + location + " removing from data.yml");
